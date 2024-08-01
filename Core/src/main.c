@@ -22,7 +22,10 @@ int main(void)
 	unsigned int fre=OUTPUT_5W;
 	bool changeflag=false;
 	bool startflag=false;
+	bool mixflag=false;
+	bool ismix=false;
 	uint8_t now=5;
+	int cnt=0;
 	unsigned int status=114514;
 	unsigned int output1=OUTPUT_1W;
 	unsigned int output2=OUTPUT_2W;
@@ -52,6 +55,7 @@ int main(void)
 				case 5:fre=output5;now=5;changeflag=true;break;
 				case 6:fre=output6;now=6;changeflag=true;break;
 				case 7:startflag=false;break;
+					case 13:ismix=!ismix;break;
 					case 14:
 						fre--;
 					changeflag=true;
@@ -98,7 +102,28 @@ int main(void)
 				DL_GPIO_clearPins(CTLDE10_PORT,CTLDE10_SW_PIN);
 				DL_GPIO_setPins(LED_PORT,LED_SHOW_PIN);
 			}
-
+			if(ismix)
+			{
+				delay_cycles(3200);
+				if(cnt>=10)
+					mixflag=true;
+				else if(cnt<=-10)
+					mixflag=false;
+				
+				if(!mixflag)
+				{
+					DL_Timer_setLoadValue(PWM_0_INST,fre--);
+					cnt++;
+					changeflag=true;
+				}
+				else if(mixflag)
+				{
+					DL_Timer_setLoadValue(PWM_0_INST,fre++);
+					cnt--;
+					changeflag=true;
+				}
+				//DL_TimerG_setCaptureCompareValue(PWM_0_INST, 100,DL_TIMERG_CAPTURE_COMPARE_0_INDEX);
+		}
 			if(changeflag)
 			{
 				DL_Timer_setLoadValue(PWM_0_INST,fre);
@@ -107,17 +132,8 @@ int main(void)
 				changeflag=false;
 			}
 
-			//delay_cycles(32000);
-			/*if(fre<=190)
-				changeflag=true;
-			else if(fre>=210)
-				changeflag=false;*/
-			/*
-			if(!changeflag)
-				DL_Timer_setLoadValue(PWM_0_INST,fre--);
-			else if(changeflag)
-				DL_Timer_setLoadValue(PWM_0_INST,fre++);*/
-			//DL_TimerG_setCaptureCompareValue(PWM_0_INST, 100,DL_TIMERG_CAPTURE_COMPARE_0_INDEX);
+
+
 		}
 }
 
