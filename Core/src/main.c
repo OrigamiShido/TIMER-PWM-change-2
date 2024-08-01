@@ -1,12 +1,13 @@
 #include "ti_msp_dl_config.h"
 //8000000/200=40000
 //8000000/x=cntfre
-#define OUTPUT_1W 688// 46541/46090
-#define OUTPUT_2W 782// 40927
-#define OUTPUT_3W 797// 40160
-#define OUTPUT_4W 810// 39514
-#define OUTPUT_5W 818//39120
-#define OUTPUT_6W 825//38770
+#define OUTPUT_1W 687// 46541/46090//50占空比688maybe the best number
+#define OUTPUT_2W 792// 40927
+#define OUTPUT_3W 804// 40160
+#define OUTPUT_4W 814// 39514//?
+#define OUTPUT_5W 823
+//39120
+#define OUTPUT_6W 829//38770
 
 
 
@@ -21,7 +22,14 @@ int main(void)
 	unsigned int fre=OUTPUT_5W;
 	bool changeflag=false;
 	bool startflag=false;
+	uint8_t now=5;
 	unsigned int status=114514;
+	unsigned int output1=OUTPUT_1W;
+	unsigned int output2=OUTPUT_2W;
+	unsigned int output3=OUTPUT_3W;
+	unsigned int output4=OUTPUT_4W;
+	unsigned int output5=OUTPUT_5W;
+	unsigned int output6=OUTPUT_6W;
     SYSCFG_DL_init();                      //Sysconfig
 
 		//NVIC_EnableIRQ(SWITCH_INT_IRQN);
@@ -37,13 +45,40 @@ int main(void)
 				switch (status)
 				{
 				case 0:startflag=true;break;
-				case 1:fre=OUTPUT_1W;changeflag=true;break;
-				case 2:fre=OUTPUT_2W;changeflag=true;break;
-				case 3:fre=OUTPUT_3W;changeflag=true;break;
-				case 4:fre=OUTPUT_4W;changeflag=true;break;
-				case 5:fre=OUTPUT_5W;changeflag=true;break;
-				case 6:fre=OUTPUT_6W;changeflag=true;break;
+				case 1:fre=output1;now=1;changeflag=true;break;
+				case 2:fre=output2;now=2;changeflag=true;break;
+				case 3:fre=output3;now=3;changeflag=true;break;
+				case 4:fre=output4;now=4;changeflag=true;break;
+				case 5:fre=output5;now=5;changeflag=true;break;
+				case 6:fre=output6;now=6;changeflag=true;break;
 				case 7:startflag=false;break;
+					case 14:
+						fre--;
+					changeflag=true;
+					switch(now)
+					{
+						case 1:output1--;break;
+						case 2:output2--;break;
+						case 3:output3--;break;
+						case 4:output4--;break;
+						case 5:output5--;break;
+						case 6:output6--;break;
+					}
+					break;
+					case 15:
+						fre++;
+					changeflag=true;
+					switch(now)
+					{
+						case 1:output1++;break;
+						case 2:output2++;break;
+						case 3:output3++;break;
+						case 4:output4++;break;
+						case 5:output5++;break;
+						case 6:output6++;break;
+					}
+					break;
+						
 				default:break;
 				}
 			}
