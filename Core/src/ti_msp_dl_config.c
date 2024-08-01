@@ -90,14 +90,24 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 
     DL_GPIO_initDigitalInput(MATRIX_H4_IOMUX);
 
-    DL_GPIO_clearPins(MATRIX_PORT, MATRIX_V1_PIN |
+    DL_GPIO_initDigitalInput(CTLDE10_DE10EN_IOMUX);
+
+    DL_GPIO_initDigitalOutput(CTLDE10_SW_IOMUX);
+
+    DL_GPIO_initDigitalOutput(LED_SHOW_IOMUX);
+
+    DL_GPIO_clearPins(GPIOA, MATRIX_V1_PIN |
 		MATRIX_V2_PIN |
 		MATRIX_V3_PIN |
-		MATRIX_V4_PIN);
-    DL_GPIO_enableOutput(MATRIX_PORT, MATRIX_V1_PIN |
+		MATRIX_V4_PIN |
+		CTLDE10_SW_PIN);
+    DL_GPIO_setPins(GPIOA, LED_SHOW_PIN);
+    DL_GPIO_enableOutput(GPIOA, MATRIX_V1_PIN |
 		MATRIX_V2_PIN |
 		MATRIX_V3_PIN |
-		MATRIX_V4_PIN);
+		MATRIX_V4_PIN |
+		CTLDE10_SW_PIN |
+		LED_SHOW_PIN);
 
 }
 
@@ -117,19 +127,19 @@ SYSCONFIG_WEAK void SYSCFG_DL_SYSCTL_init(void)
 
 
 /*
- * Timer clock configuration to be sourced by  / 4 (8000000 Hz)
+ * Timer clock configuration to be sourced by  / 1 (32000000 Hz)
  * timerClkFreq = (timerClkSrc / (timerClkDivRatio * (timerClkPrescale + 1)))
- *   8000000 Hz = 8000000 Hz / (4 * (0 + 1))
+ *   32000000 Hz = 32000000 Hz / (1 * (0 + 1))
  */
 static const DL_TimerG_ClockConfig gPWM_0ClockConfig = {
     .clockSel = DL_TIMER_CLOCK_BUSCLK,
-    .divideRatio = DL_TIMER_CLOCK_DIVIDE_4,
+    .divideRatio = DL_TIMER_CLOCK_DIVIDE_1,
     .prescale = 0U
 };
 
 static const DL_TimerG_PWMConfig gPWM_0Config = {
     .pwmMode = DL_TIMER_PWM_MODE_EDGE_ALIGN_UP,
-    .period = 200,
+    .period = 825,
     .startTimer = DL_TIMER_STOP,
 };
 
@@ -141,7 +151,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_PWM_0_init(void) {
     DL_TimerG_initPWMMode(
         PWM_0_INST, (DL_TimerG_PWMConfig *) &gPWM_0Config);
 
-    DL_TimerG_setCaptureCompareValue(PWM_0_INST, 100, DL_TIMER_CC_0_INDEX);
+    DL_TimerG_setCaptureCompareValue(PWM_0_INST, 412, DL_TIMER_CC_0_INDEX);
     DL_TimerG_setCaptureCompareOutCtl(PWM_0_INST, DL_TIMER_CC_OCTL_INIT_VAL_LOW,
 		DL_TIMER_CC_OCTL_INV_OUT_DISABLED, DL_TIMER_CC_OCTL_SRC_FUNCVAL,
 		DL_TIMERG_CAPTURE_COMPARE_0_INDEX);

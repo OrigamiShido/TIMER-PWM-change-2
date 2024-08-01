@@ -81,7 +81,7 @@ extern "C" {
 #define PWM_0_INST                                                         TIMG2
 #define PWM_0_INST_IRQHandler                                   TIMG2_IRQHandler
 #define PWM_0_INST_INT_IRQN                                     (TIMG2_INT_IRQn)
-#define PWM_0_INST_CLK_FREQ                                              8000000
+#define PWM_0_INST_CLK_FREQ                                             32000000
 /* GPIO defines for channel 0 */
 #define GPIO_PWM_0_C0_PORT                                                 GPIOA
 #define GPIO_PWM_0_C0_PIN                                          DL_GPIO_PIN_8
@@ -133,6 +133,21 @@ extern "C" {
 /* Defines for H4: GPIOA.12 with pinCMx 13 on package pin 16 */
 #define MATRIX_H4_PIN                                           (DL_GPIO_PIN_12)
 #define MATRIX_H4_IOMUX                                          (IOMUX_PINCM13)
+/* Port definition for Pin Group CTLDE10 */
+#define CTLDE10_PORT                                                     (GPIOA)
+
+/* Defines for DE10EN: GPIOA.15 with pinCMx 16 on package pin 19 */
+#define CTLDE10_DE10EN_PIN                                      (DL_GPIO_PIN_15)
+#define CTLDE10_DE10EN_IOMUX                                     (IOMUX_PINCM16)
+/* Defines for SW: GPIOA.3 with pinCMx 4 on package pin 7 */
+#define CTLDE10_SW_PIN                                           (DL_GPIO_PIN_3)
+#define CTLDE10_SW_IOMUX                                          (IOMUX_PINCM4)
+/* Port definition for Pin Group LED */
+#define LED_PORT                                                         (GPIOA)
+
+/* Defines for SHOW: GPIOA.4 with pinCMx 5 on package pin 8 */
+#define LED_SHOW_PIN                                             (DL_GPIO_PIN_4)
+#define LED_SHOW_IOMUX                                            (IOMUX_PINCM5)
 
 /* clang-format on */
 

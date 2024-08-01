@@ -11,6 +11,8 @@
 const Board  = scripting.addModule("/ti/driverlib/Board");
 const GPIO   = scripting.addModule("/ti/driverlib/GPIO", {}, false);
 const GPIO1  = GPIO.addInstance();
+const GPIO2  = GPIO.addInstance();
+const GPIO3  = GPIO.addInstance();
 const PWM    = scripting.addModule("/ti/driverlib/PWM", {}, false);
 const PWM1   = PWM.addInstance();
 const SYSCTL = scripting.addModule("/ti/driverlib/SYSCTL");
@@ -50,10 +52,22 @@ GPIO1.associatedPins[7].$name       = "H4";
 GPIO1.associatedPins[7].direction   = "INPUT";
 GPIO1.associatedPins[7].assignedPin = "12";
 
+GPIO2.$name                         = "CTLDE10";
+GPIO2.associatedPins.create(2);
+GPIO2.associatedPins[0].$name       = "DE10EN";
+GPIO2.associatedPins[0].direction   = "INPUT";
+GPIO2.associatedPins[0].assignedPin = "15";
+GPIO2.associatedPins[1].$name       = "SW";
+GPIO2.associatedPins[1].assignedPin = "3";
+
+GPIO3.$name                          = "LED";
+GPIO3.associatedPins[0].initialValue = "SET";
+GPIO3.associatedPins[0].$name        = "SHOW";
+GPIO3.associatedPins[0].assignedPin  = "4";
+
 PWM1.$name                      = "PWM_0";
-PWM1.clockDivider               = 4;
-PWM1.timerCount                 = 200;
 PWM1.pwmMode                    = "EDGE_ALIGN_UP";
+PWM1.timerCount                 = 825;
 PWM1.peripheral.ccp0Pin.$assign = "PA8";
 PWM1.peripheral.ccp1Pin.$assign = "PA9";
 PWM1.PWM_CHANNEL_0.$name        = "ti_driverlib_pwm_PWMTimerCC0";
@@ -90,4 +104,7 @@ GPIO1.associatedPins[4].pin.$suggestSolution = "PA0";
 GPIO1.associatedPins[5].pin.$suggestSolution = "PA1";
 GPIO1.associatedPins[6].pin.$suggestSolution = "PA7";
 GPIO1.associatedPins[7].pin.$suggestSolution = "PA12";
+GPIO2.associatedPins[0].pin.$suggestSolution = "PA15";
+GPIO2.associatedPins[1].pin.$suggestSolution = "PA3";
+GPIO3.associatedPins[0].pin.$suggestSolution = "PA4";
 PWM1.peripheral.$suggestSolution             = "TIMG2";
